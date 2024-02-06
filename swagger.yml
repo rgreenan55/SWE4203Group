@@ -1,0 +1,224 @@
+swagger: "2.0"
+info:
+  description: "The Swagger docs for the Tic-Tac-Toe server."
+  version: "1.0.0"
+  title: "Server Tic-Tac-Toe API"
+host: "localhost:3000"
+basePath: "/api"
+tags:
+- name: "setup"
+  description: "Everything about the setup process"
+- name: "gameplay"
+  description: "Everything about the gameplay"
+schemes:
+- "http"
+paths:
+  /start-server:
+    get:
+      tags:
+      - "setup"
+      summary: "Start a new Tic-Tac-Toe game!"
+      operationId: "startGame"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Game successfully started."
+          schema:
+            $ref: "#/definitions/GameStartSuccess"
+  /search-for-game:
+    get:
+      tags:
+      - "setup"
+      summary: "Find a Tic-Tac-Toe game!"
+      operationId: "findGame"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "accessCode"
+        in: "query"
+        description: "The access code."
+        type: "string"
+      responses:
+        400:
+          description: "Error finding game."
+          schema:
+            type: "object"
+            properties:
+              result:
+                description: "Error status."
+                example: "error"
+                type: "string"
+                enum: [error]
+              message:
+                description: "Error message."
+                example: "ACCESS_CODE_INVALID"
+                type: "string"
+                enum: [NO_ACCESS_CODE, ACCESS_CODE_INVALID]
+        200:
+          description: "Success finding game."
+          schema:
+            type: "object"
+            properties:
+              result:
+                description: "Success status."
+                example: "success"
+                type: "string"
+                enum: [success]
+              data:
+                description: "The data object."
+                type: "object"
+                properties:
+                  accessCode:
+                    description: "The 4 digit code used to find a game."
+                    example: "AD3R"
+                    type: "string"
+  /join-as-host:
+    get:
+      tags:
+      - "setup"
+      summary: "Join the game as the host."
+      parameters:
+      - name: "gameCode"
+        in: "query"
+        description: "The game code."
+        type: "string"
+      responses:
+        400:
+          description: "Error finding game."
+          schema:
+            $ref: "#/definitions/JoinError"
+        200:
+          description: "SSE stream."
+          schema:
+            $ref: "#/definitions/SSEStreamEvent"
+  /join-as-opponent:
+    get:
+      tags:
+      - "setup"
+      summary: "Join the game as the opponent."
+      parameters:
+      - name: "gameCode"
+        in: "query"
+        description: "The game code."
+        type: "string"
+      responses:
+        400:
+          description: "Error finding game."
+          schema:
+            $ref: "#/definitions/JoinError"
+        200:
+          description: "SSE stream."
+  /move:
+    get:
+      tags:
+      - "gameplay"
+      summary: "Place an \"X\" or an \"O\"."
+      parameters:
+      - name: "x"
+        in: "query"
+        description: "The x index."
+        type: "integer"
+      - name: "y"
+        in: "query"
+        description: "The y index."
+        type: "integer"
+      - name: "player"
+        in: "query"
+        description: "Your identity."
+        type: "string"
+        enum: [HOST, OPPONENT]
+      responses:
+        400:
+          description: "Move error."
+          schema:
+            $ref: "#/definitions/MoveError"
+        200:
+          description: "Move success."
+          schema:
+            $ref: "#/definitions/MoveSuccess"
+definitions:
+  GameStartSuccess:
+    type: "object"
+    properties:
+      result:
+        description: "Success status."
+        example: "success"
+        type: "string"
+        enum: [success]
+      data:
+        description: "The data object."
+        type: "object"
+        properties:
+          gameCode:
+            description: "The unique game code to identify a game."
+            example: "DL3SAC3DO3X2P30"
+            type: "string"
+          accessCode:
+            description: "The 4 digit code used to find a game."
+            example: "AD3R"
+            type: "string"
+  JoinError:
+    type: "object"
+    properties:
+      result:
+        description: "Error status."
+        example: "error"
+        type: "string"
+        enum: [error]
+      message:
+        description: "Error message."
+        example: "NO_GAME_CODE"
+        type: "string"
+        enum: [NO_GAME_CODE, NO_GAME_FOUND, PLAYER_ALREADY_PRESENT]
+  MoveSuccess:
+    type: "object"
+    properties:
+      result:
+        description: "Success status."
+        example: "success"
+        type: "string"
+        enum: [success]
+      data:
+        description: "The data object."
+        type: "object"
+        properties:
+          gameOver:
+            description: "Whether the game has finished."
+            example: true
+            type: "boolean"
+          result:
+            description: "Who won the game. Irrelevant is \"gameOver\" is set to false."
+            example: "TIE"
+            type: "string"
+            enum: [NONE, OPPONENT, HOST]
+  SSEStreamEvent:
+    type: "object"
+    properties:
+      location:
+        type: "array"
+        description: "An array of length 2 where the first element is the row index and the second element is the column index."
+        items:
+          type: "integer"
+      gameOver:
+        description: "Whether the game has finished."
+        example: true
+        type: "boolean"
+      result:
+        description: "Who won the game. Irrelevant is \"gameOver\" is set to false."
+        example: "TIE"
+        type: "string"
+        enum: [NONE, OPPONENT, HOST]
+  MoveError:
+    type: "object"
+    properties:
+      result:
+        description: "Error status."
+        example: "error"
+        type: "string"
+        enum: [error]
+      message:
+        description: "Error message."
+        example: "NO_GAME_CODE"
+        type: "string"
+        enum: [NO_GAME_CODE, NO_GAME_FOUND, NO_X, NO_Y, NO_PLAYER, INVALID_X, INVALID_Y, INVALID_PLAYER, NOT_YOUR_TURN, OUT_OF_BOUNDS, GAME_ALREADY_FINISHED, PLACEMENT_CONFLICT]

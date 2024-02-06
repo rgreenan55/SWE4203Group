@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/index.css">
+
+    <script src="/static/js/jquery-3.4.1.min.js"></script>
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+  </head>
+
+  <body class="bg-light">
+    <div class="container">
+
+      <!-- Connecting Component -->
+      <br>
+      <h3>Connection Setup</h1>
+
+      <!-- Hosting Row -->
+      <div class="row">
+        <div class="col-sm">
+          <button id="host-game" class="btn btn-dark" onclick="hostGame()">
+            Host Game
+          </button>
+          <span id="access-code-display"></span>
+        </div>
+
+        <div class="col-sm input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Access Code</span>
+          </div>
+          <input id="access-code" name="accessCode" class="form-control">
+          <div class="input-group-append">
+            <button id="find-game" class="btn btn-dark" onclick="findGame()">
+              Find Game
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tic Tac Toe Board -->
+      <hr>
+      <div class="container mx-100">
+        <div class="flex justify-center">
+          <h4 id="game-stat-disp" class="invisible">PlaceHolder</h4>
+        </div>
+
+        <div id="game-board" class="row row-cols-3">
+          <div id="box-0-0" class="col bg-dark free-box border border-light" onclick="makePlay(0, 0)"></div>
+          <div id="box-0-1" class="col bg-dark free-box border border-light" onclick="makePlay(0, 1)"></div>
+          <div id="box-0-2" class="col bg-dark free-box border border-light" onclick="makePlay(0, 2)"></div>
+          <div id="box-1-0" class="col bg-dark free-box border border-light" onclick="makePlay(1, 0)"></div>
+          <div id="box-1-1" class="col bg-dark free-box border border-light" onclick="makePlay(1, 1)"></div>
+          <div id="box-1-2" class="col bg-dark free-box border border-light" onclick="makePlay(1, 2)"></div>
+          <div id="box-2-0" class="col bg-dark free-box border border-light" onclick="makePlay(2, 0)"></div>
+          <div id="box-2-1" class="col bg-dark free-box border border-light" onclick="makePlay(2, 1)"></div>
+          <div id="box-2-2" class="col bg-dark free-box border border-light" onclick="makePlay(2, 2)"></div>
+        </div>
+
+        <div class="row pt-3">
+          <div class="col alert alert-danger invisible-if-empty" role="alert" id="error-alert"></div>
+        </div>
+
+        <div class="flex justify-center">
+          <button id="reset-game" class="btn btn-dark" onclick="resetGame()" disabled>
+            Reset
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </body>
+  <script src="/static/index.js"></script>
+</html>

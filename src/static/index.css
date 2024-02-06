@@ -1,0 +1,51 @@
+.flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+#game-board {
+  width: 50%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.free-box, .x-box, .o-box {
+  padding-top: 33.333%;
+}
+
+.free-box:hover {
+  background-color: #dbc54f !important;
+}
+
+.row-cols-3 > * {
+  flex: 0 0 33.333333%;
+  max-width: 33.333333%;
+}
+
+.invisible-if-empty:empty {
+  display: none;
+}
+
+.x-box::after, .o-box::after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  line-height: 108px;
+  font-size: 45px;
+  color: white;
+  text-align: center;
+  margin: auto;
+}
+
+.x-box::after {
+  content: "X";
+}
+
+.o-box::after {
+  content: "O";
+}
