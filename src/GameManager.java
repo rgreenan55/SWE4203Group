@@ -4,12 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import com.sun.net.httpserver.HttpExchange;
 
 class GameManager implements Disposer {
   private final static Logger log = Logger.getLogger(Main.class.getName());
   List<Game> games = new ArrayList<>();
+
+  // Initialize a Game
   public void startGame(HttpExchange exchange) {
     Game game = new Game();
     this.games.add(game);
@@ -20,6 +21,7 @@ class GameManager implements Disposer {
     Utils.sendSuccess(exchange, response);
   }
 
+  // Search for a Game using a Code
   public void searchForGame(HttpExchange exchange) {
     final Map<String, String> params = Utils.exchangeToParamMap(exchange);
 
@@ -40,6 +42,7 @@ class GameManager implements Disposer {
     throw new HttpError400("ACCESS_CODE_INVALID");
   }
 
+  // Join the Game as Host
   public void joinAsHost(HttpExchange exchange) {
     String gameCode = this.getGameCodeOrThrow(exchange);
     Game game = this.getGameOrThrow(gameCode);
@@ -53,6 +56,7 @@ class GameManager implements Disposer {
     game.setHost(body);
   }
 
+  // Join the Game as Opponent
   public void joinAsOpponent(HttpExchange exchange) {
     String gameCode = this.getGameCodeOrThrow(exchange);
     Game game = this.getGameOrThrow(gameCode);
@@ -98,6 +102,7 @@ class GameManager implements Disposer {
       throw new HttpError400(result.toString());
     }
 
+    //
     Map<String, Object> response = new HashMap<>();
     if (result == PlayResult.GAME_FINISHED) {
       this.games.remove(game);

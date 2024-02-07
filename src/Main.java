@@ -4,9 +4,11 @@ import java.net.InetSocketAddress;
 import com.sun.net.httpserver.HttpServer;
 
 class Main {
+  // Setup Logging Object
   private final static Logger log = Logger.getLogger(Main.class.getName());
 
   public static void main(String args[]) throws IOException {
+    // If a port is provided on startup use. If not use 3000.
     int port = 3000;
     if (args.length > 0) {
       try {
@@ -17,11 +19,13 @@ class Main {
       }
     }
 
+    // Set up HTTP Server at LocalHost:3000
     Main.log.info("Running at -> http://localhost:" + port);
     HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
     server.createContext("/", new TemplateHandler("static/index.html"));
     server.createContext("/static/", new StaticHandler("/static/"));
 
+    // Setup Game Manager
     GameManager manager = new GameManager();
     server.createContext("/api/start-server", HttpError.withErrorHandler(Utils.handleGet(manager::startGame)));
     server.createContext("/api/search-for-game", HttpError.withErrorHandler(Utils.handleGet(manager::searchForGame)));
