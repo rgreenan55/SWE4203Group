@@ -19,7 +19,7 @@ Identifying Issues
 | #9 | Override API Request | Adaptive | User can manually change api request from OPPONENT to HOST or vise versa to forcefully play for the other party.
 
 ### Task 3
-
+See README Table - Section "Classes"
 
 ### Task 4
 

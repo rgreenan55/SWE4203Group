@@ -40,11 +40,17 @@ brew install entr
 ```
 
 ## Classes
-| Name | Description |
-|------|-------------|
-| Main | Sets up the main portion of the application. Initiates the Game Manager Object, Also sets up HTTP server and api connections for gameplay. |
-| Game Manager | Handles the ability for users to interact with the application - such as join, host, move etc. Also creates Game Objects when a user initiates hosting a game |
-| Game |  |
+| Name | Description | Depends on | Uses |
+|------|-------------|------------|------|
+| Main | Sets up the main portion of the application. Initiates the Game Manager Object, Also sets up HTTP server and api connections for gameplay. | | GameManager, StaticHandler, TemplateHandler |
+| Game Manager | Handles the ability for users to interact with the application - such as join, host, move etc. Also creates Game Objects when a user initiates hosting a game | Disposer | HTTPErrors |
+| Game | Handles all game logic of a specific instance of a game | Disposer | |
+| StaticHandler | Handles the unchanging files and HTTP requests for obtaining them | FileHandler | |
+| TemplateHandler | Retrieves a specific file via HTTP request to server | FileHandler | |
+| FileHandler | An Abstract Class which implements the functionality for reading a file returned from the server | | |
+| Disposer | Interface which declares the requirement for a dispose function | | |
+| Utils | Various utility functions utilized by other classes | | |
+| HttpErrors | A collection of funtions which are used for handling http errors from the server | | |
 
 ## Swagger
 This project defines a `swagger.yml` file which can be converted into a website for visualization.
