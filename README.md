@@ -39,6 +39,13 @@ sudo apt-get install -y entr
 brew install entr
 ```
 
+## Classes
+| Name | Description |
+|------|-------------|
+| Main | Sets up the main portion of the application. Initiates the Game Manager Object, Also sets up HTTP server and api connections for gameplay. |
+| Game Manager | Handles the ability for users to interact with the application - such as join, host, move etc. Also creates Game Objects when a user initiates hosting a game |
+| Game |  |
+
 ## Swagger
 This project defines a `swagger.yml` file which can be converted into a website for visualization.
 
