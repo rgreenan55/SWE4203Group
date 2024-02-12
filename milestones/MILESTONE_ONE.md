@@ -22,7 +22,7 @@ Identifying Issues
 See README Table - Section "Classes"
 
 ### Task 4
-
+See User_Guide.pdf included.
 
 ### Task 5
 Push to Github --> https://github.com/rgreenan55/SWE4203Group
