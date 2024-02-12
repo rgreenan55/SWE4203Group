@@ -21,6 +21,8 @@ Identifying Issues
 ### Task 3
 See README Table - Section "Classes"
 
+For Swagger.yml, see the description for info on each endpoint
+
 ### Task 4
 See User_Guide.pdf included.
 

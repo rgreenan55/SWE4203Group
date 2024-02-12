@@ -57,6 +57,8 @@ This project defines a `swagger.yml` file which can be converted into a website 
 
 To view this information, open up `index.html` in the browser of your choice. Alternatively, go to the [Swagger Editor](https://editor.swagger.io/), copy the contents of `swagger.yml` and paste the contents in the online editor.
 
+For each endpoint in the swagger.yml file, see the description for more information.
+
 <!-- #### Generation
 First, ensure `redoc-cli` is installed.
 ```
