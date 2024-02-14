@@ -1,4 +1,5 @@
 # Milestone #1
+https://github.com/rgreenan55/SWE4203Group
 
 ### Task 1
 - Application launches and run successful for all members.
@@ -29,4 +30,4 @@ See User_Guide.pdf included.
 ### Task 5
 Push to Github --> https://github.com/rgreenan55/SWE4203Group
 
-The Milestone #1 submission was commited in a collective group through Peer Progrmaming using a single members device.
+The Milestone #1 submission was commited in a collective group for most of the tasks, done through Peer Progrmaming using a single members device. 
