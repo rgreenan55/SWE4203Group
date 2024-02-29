@@ -220,7 +220,7 @@ const makePlay = async (x, y) => {
   );
 }
 
-function resetGame() {
+const resetGame = async () => {
   hostTurn = true;
 
   $(".x-box").removeClass("x-box").addClass("free-box");
@@ -233,6 +233,14 @@ function resetGame() {
   // We don't reset the error alert since an error may have caused the reset
   // and we error to still show after the game has reset
   accessCodeDisplay.textContent = "";
+
+  await get(`/api/resetGame?gameCode=${gameState.gameCode}`);
+  if (response.status !== 200) {
+    errorAlert.innerText = "An error occurred while resetting the game.";
+  }
+  json = await response.json();
+  console.log(json);
+
   gameState.eventSource.close();
   gameState = undefined;
 }

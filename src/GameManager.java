@@ -132,6 +132,16 @@ class GameManager implements Disposer {
     return params.get("gameCode");
   }
 
+  public void resetGame(HttpExchange exchange) {
+    System.out.println("RESET");
+    String gameCode = this.getGameCodeOrThrow(exchange);
+    Game game = this.getGameOrThrow(gameCode);
+    this.games.remove(game);
+    Map<String, Object> response = new HashMap<>();
+    response.put("gameOver", true);
+    Utils.sendSuccess(exchange, response);
+  }
+
   private Game getGameOrThrow(String gameCode) {
     for (Game game : this.games) {
       if (game.gameCode.equals(gameCode)) {
