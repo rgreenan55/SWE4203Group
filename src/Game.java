@@ -22,6 +22,7 @@ enum PlayResult {
   GAME_ALREADY_FINISHED,
   PLACEMENT_CONFLICT,
   GAME_FINISHED,
+  GAME_WON,
   GAME_NOT_FINISHED,
 }
 
@@ -100,13 +101,12 @@ class Game implements Disposer {
     }
 
     this.checkFinished();
-    Game.log.info(printBoard());
-    Game.log.info("FINISHED: " + Boolean.toString(this.finished));
 
     if (this.finished) {
-      return PlayResult.GAME_FINISHED;
+        return PlayResult.GAME_WON;
     } else {
-      return PlayResult.GAME_NOT_FINISHED;
+        if (this.count == 9) return PlayResult.GAME_FINISHED;
+        return PlayResult.GAME_NOT_FINISHED;
     }
   }
 
@@ -151,7 +151,7 @@ class Game implements Disposer {
   }
 
   private void checkFinished() {
-    this.finished = this.checkWon(State.X) || this.checkWon(State.O) || this.count == 9;
+    this.finished = this.checkWon(State.X) || this.checkWon(State.O);
   }
 
   private boolean checkWon(State state) {

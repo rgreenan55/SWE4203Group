@@ -101,12 +101,16 @@ class GameManager implements Disposer {
     // the rest are and should return 400 errors
     if (result != PlayResult.GAME_FINISHED && result != PlayResult.GAME_NOT_FINISHED) { throw new HttpError400(result.toString()); }
 
-    String playerTurnString = player == Player.HOST ? "HOST" : "OPPONENT";
     Map<String, Object> response = new HashMap<>();
-    if (result == PlayResult.GAME_FINISHED) {
+    if (result == PlayResult.GAME_WON) {
       this.games.remove(game);
+      String playerTurnString = player == Player.HOST ? "HOST" : "OPPONENT";
       response.put("gameOver", true);
       response.put("winner", playerTurnString);
+    } else if (result == PlayResult.GAME_FINISHED) {
+      this.games.remove(game);
+      response.put("gameOver", true);
+      response.put("winner", "NONE");
     } else {
       response.put("gameOver", false);
     }
