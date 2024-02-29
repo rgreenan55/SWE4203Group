@@ -86,16 +86,11 @@ class Game implements Disposer {
     if (player == Player.HOST) {
       this.game[x][y] = State.X;
     } else {
-      this.game[y][y] = State.O;
+      this.game[x][y] = State.O;
     }
 
-    Game.log.info(player.toString() + " played " + this.game[x][y].toString() + " at " + x + ", " + y);
-    String message = String.format(
-      "data: { \"location\": [%d, %d], \"gameOver\": %s }\n\n", 
-      x,
-      y,
-      this.finished
-    );
+    Game.log.info(player.toString() + " played!!!! " + this.game[x][y].toString() + " at " + x + ", " + y);
+    String message = String.format("data: { \"location\": [%d, %d], \"gameOver\": %s }\n\n", x, y, this.finished);
 
     try {
       stream.write(message.getBytes());
@@ -105,6 +100,8 @@ class Game implements Disposer {
     }
 
     this.checkFinished();
+    Game.log.info(printBoard());
+    Game.log.info("FINISHED: " + Boolean.toString(this.finished));
 
     if (this.finished) {
       return PlayResult.GAME_FINISHED;
@@ -158,42 +155,30 @@ class Game implements Disposer {
   }
 
   private boolean checkWon(State state) {
+    // Check Horizontals
     for (int i = 0; i < 3; i++) {
-      if (
-        this.game[i][0] == state &&
-        this.game[i][1] == state &&
-        this.game[i][2] == state
-      ) {
-        return true;
-      }
+      if (this.game[i][0] == state && this.game[i][1] == state && this.game[i][2] == state) { return true; }
     }
-
+    // Checks Verticals
     for (int j = 0; j < 3; j++) {
-      if (
-        this.game[0][j] == state &&
-        this.game[1][j] == state &&
-        this.game[2][j] == state
-      ) {
-        return true;
-      }
+      if (this.game[0][j] == state && this.game[1][j] == state && this.game[2][j] == state) { return true; }
     }
-
-    if (
-      this.game[0][0] == state &&
-      this.game[1][1] == state &&
-      this.game[2][2] == state
-    ) {
-      return true;
-    }
-
-    if (
-      this.game[2][2] == state &&
-      this.game[1][1] == state &&
-      this.game[0][0] == state
-    ) {
-      return true;
-    }
+    // Check Diagonals
+    if (this.game[0][0] == state && this.game[1][1] == state && this.game[2][2] == state) { return true; }
+    if (this.game[0][2] == state && this.game[1][1] == state && this.game[2][0] == state) { return true; }
 
     return false;
   }
+
+    // Debug Purposes
+    private String printBoard() {
+        String board = "\n";
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board += " " + this.game[i][j];
+            }
+            board += "\n";
+        }
+        return board;
+    }
 }

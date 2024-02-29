@@ -95,18 +95,18 @@ class GameManager implements Disposer {
     }
 
     PlayResult result = game.play(player, x, y);
+    System.out.println("THIS IS RESULT: " + result);
 
     // GAME_FINISHED and GAME_NOT_FINISHED are not error states
     // the rest are and should return 400 errors
-    if (result != PlayResult.GAME_FINISHED && result != PlayResult.GAME_NOT_FINISHED) {
-      throw new HttpError400(result.toString());
-    }
+    if (result != PlayResult.GAME_FINISHED && result != PlayResult.GAME_NOT_FINISHED) { throw new HttpError400(result.toString()); }
 
-    //
+    String playerTurnString = player == Player.HOST ? "HOST" : "OPPONENT";
     Map<String, Object> response = new HashMap<>();
     if (result == PlayResult.GAME_FINISHED) {
       this.games.remove(game);
       response.put("gameOver", true);
+      response.put("winner", playerTurnString);
     } else {
       response.put("gameOver", false);
     }
