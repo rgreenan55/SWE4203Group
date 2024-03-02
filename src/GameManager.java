@@ -95,18 +95,22 @@ class GameManager implements Disposer {
     }
 
     PlayResult result = game.play(player, x, y);
+    System.out.println("THIS IS RESULT: " + result);
 
     // GAME_FINISHED and GAME_NOT_FINISHED are not error states
     // the rest are and should return 400 errors
-    if (result != PlayResult.GAME_FINISHED && result != PlayResult.GAME_NOT_FINISHED) {
-      throw new HttpError400(result.toString());
-    }
+    if (result != PlayResult.GAME_FINISHED && result != PlayResult.GAME_NOT_FINISHED) { throw new HttpError400(result.toString()); }
 
-    //
     Map<String, Object> response = new HashMap<>();
-    if (result == PlayResult.GAME_FINISHED) {
+    if (result == PlayResult.GAME_WON) {
+      this.games.remove(game);
+      String playerTurnString = player == Player.HOST ? "HOST" : "OPPONENT";
+      response.put("gameOver", true);
+      response.put("winner", playerTurnString);
+    } else if (result == PlayResult.GAME_FINISHED) {
       this.games.remove(game);
       response.put("gameOver", true);
+      response.put("winner", "NONE");
     } else {
       response.put("gameOver", false);
     }
@@ -130,6 +134,16 @@ class GameManager implements Disposer {
     }
 
     return params.get("gameCode");
+  }
+
+  public void resetGame(HttpExchange exchange) {
+    System.out.println("RESET");
+    String gameCode = this.getGameCodeOrThrow(exchange);
+    Game game = this.getGameOrThrow(gameCode);
+    this.games.remove(game);
+    Map<String, Object> response = new HashMap<>();
+    response.put("gameOver", true);
+    Utils.sendSuccess(exchange, response);
   }
 
   private Game getGameOrThrow(String gameCode) {
