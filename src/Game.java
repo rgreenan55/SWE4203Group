@@ -65,15 +65,6 @@ class Game implements Disposer {
       return PlayResult.NOT_YOUR_TURN;
     }
 
-    OutputStream stream;
-    if (this.next == Player.HOST) {
-      this.next = Player.OPPONENT;
-      stream = Utils.getOrThrow(this.opponent, "NO_OPPONENT");
-    } else {
-      this.next = Player.HOST;
-      stream = Utils.getOrThrow(this.host, "NO_HOST");
-    }
-
     // The game index starts at 0
     if (x > 2 || x < 0 || y > 2 || y < 0) {
       return PlayResult.OUT_OF_BOUNDS;
@@ -92,6 +83,15 @@ class Game implements Disposer {
 
     Game.log.info(player.toString() + " played!!!! " + this.game[x][y].toString() + " at " + x + ", " + y);
     String message = String.format("data: { \"location\": [%d, %d], \"gameOver\": %s }\n\n", x, y, this.finished);
+
+    OutputStream stream;
+    if (this.next == Player.HOST) {
+      this.next = Player.OPPONENT;
+      stream = Utils.getOrThrow(this.opponent, "NO_OPPONENT");
+    } else {
+      this.next = Player.HOST;
+      stream = Utils.getOrThrow(this.host, "NO_HOST");
+    }
 
     try {
       stream.write(message.getBytes());
