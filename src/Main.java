@@ -32,6 +32,7 @@ class Main {
     server.createContext("/api/join-as-host", HttpError.withErrorHandler(Utils.handleGet(manager::joinAsHost)));
     server.createContext("/api/join-as-opponent", HttpError.withErrorHandler(Utils.handleGet(manager::joinAsOpponent)));
     server.createContext("/api/move", HttpError.withErrorHandler(Utils.handleGet(manager::move)));
+    server.createContext("/api/resetGame", HttpError.withErrorHandler(Utils.handleGet(manager::resetGame)));
 
     // Add shutdown hook to stop the server
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {

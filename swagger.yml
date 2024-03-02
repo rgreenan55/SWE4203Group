@@ -145,6 +145,42 @@ paths:
           description: "Move success."
           schema:
             $ref: "#/definitions/MoveSuccess"
+  /resetGame:
+    get:
+      tags:
+      - "gameplay"
+      summary: "Resets a game, removing it from the server list."
+      parameters:
+      - name: "gameCode"
+        in: "query"
+        description: "The game code."
+        type: "string"
+      responses:
+        400:
+          description: "Error finding game."
+          schema:
+            type: "object"
+            properties:
+              result:
+                description: "Error status."
+                example: "error"
+                type: "string"
+                enum: [error]
+              message:
+                description: "Error message."
+                example: "NO_GAME_CODE"
+                type: "string"
+                enum: [NO_GAME_CODE, NO_GAME_FOUND]
+        200:
+          description: "Reset success."
+          schema:
+            type: "object"
+            properties:
+              gameOver:
+                description: "Whether the game has finished."
+                example: true
+                type: "boolean"
+                enum: [true]
 definitions:
   GameStartSuccess:
     type: "object"
